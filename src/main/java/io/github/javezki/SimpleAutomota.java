@@ -1,4 +1,6 @@
-package me.CHANGEME.slimefunaddon;
+package io.github.javezki;
+
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -8,12 +10,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.groups.NestedItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.groups.SubItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
-public class ExampleAddon extends JavaPlugin implements SlimefunAddon {
+public class SimpleAutomota extends JavaPlugin implements SlimefunAddon {
+
+    // The main category name ID
+    public static final String MAIN_CATEGORY = "SIMPLE_AUTOMOTA";
+    public static final String OUTPUT_CATEGORY = "OUTPUT_AUTOMOTA";
 
     @Override
     public void onEnable() {
@@ -28,18 +37,19 @@ public class ExampleAddon extends JavaPlugin implements SlimefunAddon {
          * 1. Creating a new Category
          * This Category will use the following ItemStack
          */
-        ItemStack itemGroupItem = new CustomItemStack(Material.DIAMOND, "&4Addon Category", "", "&a> Click to open");
+        ItemStack itemGroupItem = new CustomItemStack(Material.HOPPER, "&4SimpleAutomata", "", "&a> Click to open");
 
         // Give your Category a unique id.
-        NamespacedKey itemGroupId = new NamespacedKey(this, "addon_category");
-        ItemGroup itemGroup = new ItemGroup(itemGroupId, itemGroupItem);
-
+        NamespacedKey itemGroupId = new NamespacedKey(this, MAIN_CATEGORY);
+        NestedItemGroup nestedItemGroup = new NestedItemGroup(itemGroupId, itemGroupItem);
+        ItemGroup outputGroup = new SubItemGroup(itemGroupId, nestedItemGroup, new CustomItemStack(Material.HOPPER, "&4Output", OUTPUT_CATEGORY, "&a> Output items"));
         /*
          * 2. Create a new SlimefunItemStack
          * This class has many constructors, it is very important
          * that you give each item a unique id.
          */
-        SlimefunItemStack slimefunItem = new SlimefunItemStack("COOL_DIAMOND", Material.DIAMOND, "&4Cool Diamond", "&c+20% Coolness");
+        SlimefunItemStack slimefunItem = new SlimefunItemStack("basic_hopper", Material.DIAMOND, "&4Basic Hopper", "&c+What does it do?");
+
 
         /*
          * 3. Creating a Recipe
@@ -48,7 +58,19 @@ public class ExampleAddon extends JavaPlugin implements SlimefunAddon {
          * The machine in which this recipe is crafted in is specified
          * further down as the RecipeType.
          */
-        ItemStack[] recipe = { new ItemStack(Material.EMERALD), null, new ItemStack(Material.EMERALD), null, new ItemStack(Material.DIAMOND), null, new ItemStack(Material.EMERALD), null, new ItemStack(Material.EMERALD) };
+
+        /**
+         * Recipe: 
+         * Magnesium Ingot, Magnesium Ingot, Magnesium Ingot
+         * Magnesium Ingot, Hopper, Magnesium Ingot
+         * Magnesium Ingot, Magnesium Ingot, Magnesium Ingot
+         */
+        ItemStack[] recipe = 
+        {
+            new ItemStack(SlimefunItems.MAGNESIUM_INGOT),  new ItemStack(SlimefunItems.MAGNESIUM_INGOT), new ItemStack(SlimefunItems.MAGNESIUM_INGOT),
+            new ItemStack(SlimefunItems.MAGNESIUM_INGOT), new ItemStack(Material.HOPPER), new ItemStack(SlimefunItems.MAGNESIUM_INGOT),
+            new ItemStack(SlimefunItems.MAGNESIUM_INGOT), new ItemStack(SlimefunItems.MAGNESIUM_INGOT), new ItemStack(SlimefunItems.MAGNESIUM_INGOT)
+        };
 
         /*
          * 4. Registering the Item
@@ -57,8 +79,10 @@ public class ExampleAddon extends JavaPlugin implements SlimefunAddon {
          * which this item is crafted in.
          * Recipe Types from Slimefun itself will automatically add the recipe to that machine.
          */
-        SlimefunItem item = new SlimefunItem(itemGroup, slimefunItem, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        SlimefunItem item = new SlimefunItem(outputGroup, slimefunItem, RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
         item.register(this);
+
+        getLogger().log(Level.CONFIG, "&6Sucessfully initialized SimpleAutomota!");
     }
 
     @Override
@@ -68,8 +92,7 @@ public class ExampleAddon extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public String getBugTrackerURL() {
-        // You can return a link to your Bug Tracker instead of null here
-        return null;
+        return "https://github.com/Javezki/SimpleAutomota/issues";
     }
 
     @Override
