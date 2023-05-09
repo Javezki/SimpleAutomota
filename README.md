@@ -1,6 +1,5 @@
-# Slimefun4 Addon
-This is an example Repository for a generic Slimefun4 Addon.
-In the top left is a button "Use this template", click this to create your own Addon for Slimefun4 using this basic template.
+# SimpleAutomota
+As an avid Slimefun player, I really dislike having to do everything manually like sifting, panning and other menial tasks. While this won't replace the cargo system, this addon is designed to provide automation tools to players at a much earlier start rather than having to make cargo manager's which will take a lot of time
 
 ## How to create your own addon.
 This is a template repository that you can use to create your own Slimefun4 Addon.<br>
